@@ -1,0 +1,26 @@
+.container{
+	padding:5px 10px;
+}
+
+
+.human{
+	margin-right:20px;
+}
+
+
+
+.red-human{
+	color:#EF1A1A;
+}
+.blue-human{
+	color:#2E9AFE;
+}
+.green-human{
+	color:#58FA82;
+}
+.pink-human{
+	color:#F781F3;
+}
+.yellow-human{
+	color:#F3F781;
+}
