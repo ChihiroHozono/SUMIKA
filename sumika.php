@@ -37,7 +37,7 @@
 			<input type="text" name="name">
 			<input type="button" value = "SUMIKA" name="location"
 			onClick='navigator.geolocation.getCurrentPosition(echo_geodata)'>
-			<input type="button" value = "KURASU" name="redord">
+			<input type="submit" name="KURASU" value='KURASU'>
 		</form>
 	</div>
 
@@ -45,27 +45,23 @@
 	<!-- PHP -->
 	<?php
 	// サニタイズ化と表示
-	$name = htmlspecialchars($_POST['name']);
-	if ($name !="") {
-		echo $name;
-	}
+		$name = htmlspecialchars($_POST['name']);
+		//１データベースに接続
+		$dsn='mysql:dbname=sumika;host=localhost';
+		$user='root';
+		$password='';
+		$dbh=new PDO($dsn,$user,$password);
+		$dbh->query('SET NAMES utf8');
 
-	//１データベースに接続
-	$dsn='mysql:dbname=phpkiso;host=localhost';
-	$user='root';
-	$password='';
-	$dbh=new PDO($dsn,$user,$password);
-	$dbh->query('SET NAMES utf8');
+		//２ SQL文を実行する
+		$sql="INSERT INTO `test` (`id`, `name`) VALUES (NULL,?);";
 
-	//２ SQL文を実行する
-	$sql="INSERT INTO `survey` (`id`, `cickname`, `email`, `content`) VALUES (NULL, 'ひろし', 'っっっh＠gggg', 'sbhrdz:emdpegm:S')";
+		$data = array($name);
+		$stmt=$dbh -> prepare($sql);
+		$stmt->execute($data);
 
-	$stmt=$dbh -> prepare($sql);
-	$stmt->execute();
-
-	// データベースの切断
-	$dbh=null;
-
+		// データベースの切断
+		$dbh=null;
 
 	?>
 
@@ -89,6 +85,8 @@
 			alert(data['latitude'])
 			alert(data['longitude'])
 		}
+
+
 
 		// JQuery
 		$('.red-human').click(function(){
