@@ -1,13 +1,80 @@
 .container{
-	padding:5px 10px;
+	padding:10px 20px;
+
 }
 
 
-.human{
-	margin-right:20px;
+body{
+  font-family: "Avenir Next";
+  width:375px;
+
 }
 
 
+
+/*_______________________________________*/
+.main-text{
+  border-bottom:2px solid #dee7ec;
+  font-family: "Makinas";
+
+}
+
+
+
+
+/*_______________________________________*/
+/*ヘッダー*/
+/*ハンバーガー*/
+.fa-align-justify{
+	color:#3ad63a;
+}
+
+/*タイトル*/
+.title{
+	font-size: 30px;
+	padding-left:20px;
+}
+
+
+/*_______________________________________*/
+
+/*メイン*/
+.main{
+	position:relative;
+}
+
+/*メインスミカ*/
+.main-sumika{
+	position:absolute;
+	top:50px;
+	left:30px;
+	opacity: 0;
+	color:#d6d6d6;
+	padding-left:100px;
+}
+
+
+
+/*メインスミト*/
+.main-sumito{
+	position: absolute;
+	top:94px;
+	left:163px;
+	color:white;
+}
+
+.create-sumika{
+	color:#808080;
+}
+
+
+
+/*_______________________________________*/
+/*SUMITO*/
+.fa-male{
+	margin-right:22px;
+	opacity:0.5;
+}
 
 .red-human{
 	color:#EF1A1A;
@@ -23,4 +90,8 @@
 }
 .yellow-human{
 	color:#F3F781;
+}
+
+.black-human{
+	color:black;
 }
