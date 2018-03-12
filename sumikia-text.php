@@ -49,3 +49,25 @@
 		$dbh = null;
 
 	?>
+
+	<?php
+	// サニタイズ化と表示
+	$word = htmlspecialchars($_POST['word']);
+	//１データベースに接続
+	$dsn='mysql:dbname=sumika;host=localhost;';
+	$user='root';
+	$password='';
+	$dbh=new PDO($dsn,$user,$password);
+	$dbh->query('SET NAMES utf8');
+
+	//２ SQL文を実行する
+	$sql="INSERT INTO `sumika` (`id`, `word`) VALUES (NULL, 'aaaaa');";
+
+	$data = array($word);
+	$stmt=$dbh -> prepare($sql);
+	$stmt->execute($data);
+
+	// データベースの切断
+	$dbh=null;
+
+	?>

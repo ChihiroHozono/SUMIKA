@@ -1,3 +1,32 @@
+<?php
+
+
+// サニタイズ化と表示
+if(isset($_POST) && !empty($_POST['word'])){
+	$word = htmlspecialchars($_POST['word']);
+	//１データベースに接続
+	$dsn='mysql:dbname=sumika;host=localhost;';
+	$user='root';
+	$password='';
+	$dbh=new PDO($dsn,$user,$password);
+	$dbh->query('SET NAMES utf8');
+
+	//２ SQL文を実行する
+	$sql="INSERT INTO `sumika` (`id`, `word`) VALUES (NULL, ?);";
+
+	$data = array($word);
+	$stmt=$dbh -> prepare($sql);
+	$stmt->execute($data);
+	// データベースの切断
+	$dbh=null;
+}
+
+?>
+
+
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,7 +98,12 @@
 
 	<!-- ヒトコト -->
 	<h3 class="main-text">ヒトコト</h3>
-	<input type="text" name="" size="55" placeholder="ヒトコト">
+		<form method="POST" action="sumika.php">
+			<input type="text" name="word" size="55" placeholder="ヒトコト">
+			<input type="submit" name="name" value="クラス">
+		</form>
+
+
 	</div>
 
 
