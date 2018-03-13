@@ -11,15 +11,12 @@ body{
 }
 
 
-
 /*_______________________________________*/
 .main-text{
   border-bottom:2px solid #dee7ec;
   font-family: "Makinas";
 
 }
-
-
 
 
 /*_______________________________________*/
@@ -52,9 +49,59 @@ body{
 	color:#d6d6d6;
 	padding-left:100px;
 }
+/*_______________________________________*/
+/*モーダル*/
+.login-modal-wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  display: none;
+}
+
+.modal {
+  position: absolute;
+  top: 20%;
+  left: 5%;
+  background-color: #e6ecf0;
+  padding: 20px 0 40px;
+  border-radius: 10px;
+  width: 350px;
+  height: auto;
+  text-align: center;
+}
 
 
+#signup-form, #login-form {
+  width: 100%;
+}
 
+
+#signup-form input, #login-form input {
+  width: 300px;
+  margin-bottom: 20px;
+  font-size: 12px;
+  padding: 12px 12px;
+  border: 1px solid #d0d5d8;
+  border-radius: 5px;
+}
+
+#submit-btn {
+  display: inline-block;
+  padding: 14px 130px;
+  background-color: #5dca88;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  margin: 10px auto;
+  cursor: pointer;
+}
+
+
+/*_______________________________________*/
 /*メインスミト*/
 .main-sumito{
 	position: absolute;
