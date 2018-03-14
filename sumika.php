@@ -1,9 +1,13 @@
+
 <?php
 
 
-// サニタイズ化と表示
-if(isset($_POST) && !empty($_POST['word'])){
-	$word = htmlspecialchars($_POST['word']);
+if(isset($_POST["jtd"])){
+	// POSTで受け取ったJSONの値を連想配列にデコード
+	$jtd = json_decode($_POST["jtd"],true);
+	print_r($jtd);
+
+
 	//１データベースに接続
 	$dsn='mysql:dbname=sumika;host=localhost;';
 	$user='root';
@@ -12,16 +16,19 @@ if(isset($_POST) && !empty($_POST['word'])){
 	$dbh->query('SET NAMES utf8');
 
 	//２ SQL文を実行する
-	$sql="INSERT INTO `sumika` (`id`, `word`) VALUES (NULL, ?);";
+	$sql="INSERT INTO `sumika` (`id`, `time`, `text`, `latitude`, `longitude`, `color`) VALUES (NULL, ?, ?, ?, ?, ?)";
 
-	$data = array($word);
+	$data = array($jtd['time'],$jtd['text'],$jtd['latitude'],$jtd['longitude'],$jtd['color'],);
 	$stmt=$dbh -> prepare($sql);
 	$stmt->execute($data);
+
 	// データベースの切断
 	$dbh=null;
 }
 
+
 ?>
+
 
 
 
@@ -43,6 +50,10 @@ if(isset($_POST) && !empty($_POST['word'])){
 	  	integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
 	  	crossorigin="anonymous">
   	</script>
+  	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+
+
+
 </head>
 
 <body>
@@ -85,9 +96,10 @@ if(isset($_POST) && !empty($_POST['word'])){
       <div id="login-form">
         <h2>場所と時間</h2>
         <form method ="POST" action="sumika.php">
-        	<p class="print-time"></p>
-					<p class="print-latitude"></p>
-					<p class="print-longitude"></p>
+        	    <p class="print-time"></p>
+				<p class="print-latitude"></p>
+				<p class="print-longitude"></p>
+
           <div id="submit-btn">ここに住む</div>
         </form>
     	</div>
@@ -119,10 +131,11 @@ if(isset($_POST) && !empty($_POST['word'])){
 
 	<!-- ヒトコト -->
 	<h3 class="main-text">ヒトコト</h3>
-		<form method="POST" action="sumika.php">
+		<form method="post" action="sumika.php" id="submit" >
 			<input type="text" name="word" id = "input" size="55" placeholder="ヒトコト">
-			<input type="submit" name="name" value="クラス">
+			<input type="hidden" id = "jtd" name="jtd" value="">
 		</form>
+
 
 
 	</div>
@@ -150,15 +163,6 @@ if(isset($_POST) && !empty($_POST['word'])){
 			var longitude= position.coords.longitude;
 			total_data['longitude'] = longitude;
 
-
-			// 日付とジオデータを表示
-			$('.print-time').text(time);
-			$('.print-latitude').text(latitude);
-			$('.print-longitude').text(longitude);
-
-
-			// サーバーへの送信
-			$.post()
 		}
 
 
@@ -167,11 +171,6 @@ if(isset($_POST) && !empty($_POST['word'])){
 			document.getElementById( 'sound-file' ).play();
 		}
 
-
-		// ここに住むボタンを押した時の関数
-		function Hello(a){
-			alert(a);
-		}
 
 
 
@@ -199,7 +198,7 @@ if(isset($_POST) && !empty($_POST['word'])){
 			$('.main-sumito').css('color',color).css('opacity','1');
 			// 色の値を配列に代入
 			total_data['color'] = color;
-			console.log(total_data);
+
 		});
 
 		// 入力した時のイベント
@@ -208,8 +207,19 @@ if(isset($_POST) && !empty($_POST['word'])){
 			total_data['text'] = text;
 		});
 
-
-
+		// メインスミカをタップした時のイベント
+		$('.main-sumika').click(function(){
+			var json_total_data = JSON.stringify(total_data);
+			console.log(json_total_data);
+			// hiddenタグのvalueに変数を入れる
+			$('#jtd').val(json_total_data);
+			// submit
+        	$('#submit').submit();
+		});
+		// エンターを押した時のsubmitを防ぐ
+		$('input[type="text"]').keypress(function(e){
+    	if((e.which == 13) || (e.keyCode == 13)){ return false; }
+		});
 
 
 	</script>
