@@ -1,39 +1,3 @@
-
-<?php
-
-
-if(isset($_POST["jtd"])){
-	// POSTで受け取ったJSONの値を連想配列にデコード
-	$jtd = json_decode($_POST["jtd"],true);
-	print_r($jtd);
-
-
-	//１データベースに接続
-	$dsn='mysql:dbname=sumika;host=localhost;';
-	$user='root';
-	$password='';
-	$dbh=new PDO($dsn,$user,$password);
-	$dbh->query('SET NAMES utf8');
-
-	//２ SQL文を実行する
-	$sql="INSERT INTO `sumika` (`id`, `time`, `text`, `latitude`, `longitude`, `color`) VALUES (NULL, ?, ?, ?, ?, ?)";
-
-	$data = array($jtd['time'],$jtd['text'],$jtd['latitude'],$jtd['longitude'],$jtd['color'],);
-	$stmt=$dbh -> prepare($sql);
-	$stmt->execute($data);
-
-	// データベースの切断
-	$dbh=null;
-}
-
-
-?>
-
-
-
-
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,38 +14,46 @@ if(isset($_POST["jtd"])){
 	  	integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
 	  	crossorigin="anonymous">
   	</script>
-  	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-
 
 
 </head>
 
 <body>
-
 	<div class="container">
 
-	<!-- 音声ファイル -->
-	<audio id="sound-file" preload="auto">
-		<source src="hanma.wav" type="audio/wav">
-	</audio>
+		<header>
+		    <!-- ハンバーガー -->
+			<span><i class="fas fa-align-justify fa-2x"></i></span>
 
-	<header>
-		<!-- ハンバーガー -->
-		<span><i class="fas fa-align-justify fa-2x"></i></span>
+			<!-- タイトル -->
+			<span class="title">SUMIKA</span>
+
+			<!-- メニュー -->
+			<div id="hide-menu">
+				<ul>
+					<a id= "doko-sumika-link" href="doko_sumika.php">スミカをみる</a>
+				</ul>
+			</div>
 
 
-		<!-- タイトル -->
-	<span class="title">SUMIKA</span>
-	</header>
+		</header>
 
-	<!-- 背景 -->
-	<div class="main">
-		<img class = "background" src="sumika.png">
-		<!-- メインスミカとメインスミト -->
 
-		<i class="fas fa-home fa-4x main-sumika"></i>
-		<i class="fas fa-male fa-1x main-sumito"></i>
-	</div>
+		<div class="main-wrapper">
+
+		 	<!-- 背景 -->
+			<img class = "background" src="sumika_file/sumika.png">
+
+			 <!-- メインスミカとメインスミト -->
+			<i class="fas fa-home fa-4x main-sumika"></i>
+			<i class="fas fa-male fa-1x main-sumito"></i>
+
+			 <!-- 音声ファイル -->
+			<audio id="sound-file" preload="auto">
+				<source src="sumika_file/hanma.wav" type="audio/wav">
+			</audio>
+
+		</div>
 
 
 	<!-- スミカを作る -->
@@ -135,9 +107,6 @@ if(isset($_POST["jtd"])){
 			<input type="text" name="word" id = "input" size="55" placeholder="ヒトコト">
 			<input type="hidden" id = "jtd" name="jtd" value="">
 		</form>
-
-
-
 	</div>
 
 
@@ -146,50 +115,55 @@ if(isset($_POST["jtd"])){
 	<script type="text/javascript">
 		// データを保持する連想配列
 		var total_data = {};
-
-
-
 		// 日付やジオデータを表示しtotal_dataに代入する関数
 		function echo_geodata(position){
-
 			// 日付データ
 			var time = new Date();
 			total_data['time'] = time;
-
-
 			// ジオデータ
 			var latitude = position.coords.latitude;
 			total_data['latitude'] = latitude;
 			var longitude= position.coords.longitude;
 			total_data['longitude'] = longitude;
-
 		}
-
-
 		// 音声ファイルを再生する関数
 		function sound(){
 			document.getElementById( 'sound-file' ).play();
 		}
-
-
-
-
-
 		// JQuery------------------------------------------------
+		// ハンバーガーをタップした時の動作（メニューとオーバーレイ）
+
+		var num = 0;
+		$('.fa-align-justify').click(function(){
+			$("body").append('<div id="modal-overlay"></div>');
+			$(this).data("click",++num);
+			var click = $(this).data("click");
+			if(click % 2 == 1){
+				$('#hide-menu').css('display','block');
+				$('#modal-overlay').fadeIn();
+			}else{
+				$('#hide-menu').css('display','none');
+				$('#modal-overlay').fadeOut();
+			}
+		})
+
+
+
+
+
+
 		// カナヅチを押した時の動作
 		$('.create-sumika').click(function(){
 			navigator.geolocation.getCurrentPosition(echo_geodata);
     		$('.main-sumika').animate({opacity: '1'},5000);
     		sound();
     		$('#sumika-create-modal').fadeIn();
-
     	});
 
 		// モーダルを閉じる
 		$('#submit-btn').click(function(){
 			$('#sumika-create-modal').fadeOut();
 		});
-
 
 		// スミトをクリック
 		$('.fa-male').click(function(){
@@ -198,7 +172,6 @@ if(isset($_POST["jtd"])){
 			$('.main-sumito').css('color',color).css('opacity','1');
 			// 色の値を配列に代入
 			total_data['color'] = color;
-
 		});
 
 		// 入力した時のイベント
@@ -216,11 +189,11 @@ if(isset($_POST["jtd"])){
 			// submit
         	$('#submit').submit();
 		});
+
 		// エンターを押した時のsubmitを防ぐ
 		$('input[type="text"]').keypress(function(e){
     	if((e.which == 13) || (e.keyCode == 13)){ return false; }
 		});
-
 
 	</script>
 </body>

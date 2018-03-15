@@ -3,6 +3,14 @@
 
 }
 
+li{
+  list-style: none;
+}
+
+a {
+text-decoration: none;
+}
+
 
 body{
   font-family: "Avenir Next";
@@ -21,22 +29,51 @@ body{
 
 /*_______________________________________*/
 /*ヘッダー*/
-/*ハンバーガー*/
-.fa-align-justify{
-	color:#3ad63a;
-}
+
 
 /*タイトル*/
 .title{
 	font-size: 30px;
-	padding-left:20px;
+	padding-left:35%;
 }
 
+/*ハンバーガー*/
+.fa-align-justify{
+  color:#3ad63a;
+  position: absolute;
+  z-index:100;
+}
+
+
+/*ハンバーガーメニュー  */
+#hide-menu{
+  display:none;
+  position:absolute;
+  left:10px;
+  z-index:100;
+  float:left;
+}
+
+#doko-sumika-link{
+  color:white;
+}
+
+/*オーバーレイ*/
+#modal-overlay{
+  z-index:1;
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:120%;
+  background-color:rgba(0,0,0,0.75);
+}
 
 /*_______________________________________*/
 
 /*メイン*/
-.main{
+.main-wrapper{
 	position:relative;
 }
 
