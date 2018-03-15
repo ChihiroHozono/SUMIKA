@@ -1,3 +1,43 @@
+<?php
+
+
+// データの取得
+
+  //１データベースに接続
+  $dsn='mysql:dbname=sumika;host=localhost;';
+  $user='root';
+  $password='';
+  $dbh=new PDO($dsn,$user,$password);
+  $dbh->query('SET NAMES utf8');
+  //２ SQL文を実行する
+  $sql='SELECT * FROM `sumika`';
+  $stmt = $dbh -> prepare($sql);
+  $stmt->execute();
+
+  while (1) {
+  $rec = $stmt->fetch(PDO::FETCH_ASSOC);
+  if ($rec == false) {
+    break;
+  }
+  echo $rec['id'] . '<br>';
+  echo $rec['time'] . '<br>';
+  echo $rec['text'] . '<br>';
+  echo $rec['latitude'] . '<br>';
+  echo $rec['longitude']. '<br>';
+  echo $rec['color'].'<br>';
+  echo '<hr>';
+  }
+
+  // データベースの切断
+  $dbh=null;
+
+
+
+
+ ?>
+
+
+
 <!DOCTYPE html>
 <html>
   <head>
