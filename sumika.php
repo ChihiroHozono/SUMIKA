@@ -72,6 +72,9 @@
 				<p class="print-latitude"></p>
 				<p class="print-longitude"></p>
 
+		  <div id="map" style="width:400px; height:300px"></div>
+
+
           <div id="submit-btn">ここに住む</div>
         </form>
     	</div>
@@ -116,6 +119,7 @@
 		// データを保持する連想配列
 		var total_data = {};
 		// 日付やジオデータを表示しtotal_dataに代入する関数
+		// ダブりなう
 		function echo_geodata(position){
 			// 日付データ
 			var time = new Date();
@@ -125,6 +129,8 @@
 			total_data['latitude'] = latitude;
 			var longitude= position.coords.longitude;
 			total_data['longitude'] = longitude;
+
+
 		}
 		// 音声ファイルを再生する関数
 		function sound(){
@@ -149,15 +155,13 @@
 
 
 
-
-
-
 		// カナヅチを押した時の動作
 		$('.create-sumika').click(function(){
 			navigator.geolocation.getCurrentPosition(echo_geodata);
     		$('.main-sumika').animate({opacity: '1'},5000);
     		sound();
     		$('#sumika-create-modal').fadeIn();
+    		initMap();
     	});
 
 		// モーダルを閉じる
@@ -196,5 +200,60 @@
 		});
 
 	</script>
+	<script>
+    // 現在地取得処理
+    function initMap() {
+      // Geolocation APIに対応している
+      if (navigator.geolocation) {
+        // 現在地を取得
+        navigator.geolocation.getCurrentPosition(
+          // 取得成功した場合
+          function(position) {
+            // 緯度・経度を変数に格納
+            var mapLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            // マップオプションを変数に格納
+            var mapOptions = {
+              zoom : 15,          // 拡大倍率
+              center : mapLatLng  // 緯度・経度
+            };
+            // マップオブジェクト作成
+            var map = new google.maps.Map(
+              document.getElementById("map"), // マップを表示する要素
+              mapOptions         // マップオプション
+            );
+            //マップにマーカーを表示する
+            var marker = new google.maps.Marker({
+              map : map,             // 対象の地図オブジェクト
+              position : mapLatLng   // 緯度・経度
+            });
+          },
+          // 取得失敗した場合
+          function(error) {
+            // エラーメッセージを表示
+            switch(error.code) {
+              case 1: // PERMISSION_DENIED
+                alert("位置情報の利用が許可されていません");
+                break;
+              case 2: // POSITION_UNAVAILABLE
+                alert("現在位置が取得できませんでした");
+                break;
+              case 3: // TIMEOUT
+                alert("タイムアウトになりました");
+                break;
+              default:
+                alert("その他のエラー(エラーコード:"+error.code+")");
+                break;
+            }
+          }
+        );
+      // Geolocation APIに対応していない
+      } else {
+        alert("この端末では位置情報が取得できません");
+      }
+    }
+  </script>
+	<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxNXrYg4kLhq6v3iGy2PBewPSU1EJejys&callback=initMap">
+    </script>
 </body>
 </html>

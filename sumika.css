@@ -102,11 +102,9 @@ body{
 .modal {
   position: absolute;
   top: 20%;
-  left: 5%;
   background-color: #e6ecf0;
   padding: 20px 0 40px;
   border-radius: 10px;
-  width: 350px;
   height: auto;
   text-align: center;
 }
