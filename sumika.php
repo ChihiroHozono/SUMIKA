@@ -4,87 +4,58 @@
 <head>
 	<title>SUMIKA</title>
 	<meta charset="utf-8">
-	<!-- css -->
 	<link rel="stylesheet" type="text/css" href="sumika.css">
-	<!-- フォントオーサム -->
 	<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
-
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
 </head>
 
 <body>
 	<div class="container">
-
 		<header>
 		    <!-- ハンバーガー -->
 			<span><i class="fas fa-align-justify fa-2x"></i></span>
-
 			<!-- タイトル -->
 			<span class="title">SUMIKA</span>
-
 			<!-- メニュー -->
 			<div id="hide-menu">
 				<ul>
 					<a id= "doko-sumika-link" href="doko_sumika.php">スミカをみる</a>
 				</ul>
 			</div>
-
-
 		</header>
 
 
 		<div class="main-wrapper">
-
 		 	<!-- 背景 -->
 			<img class = "background" src="sumika_file/sumika.png">
-
 			 <!-- メインスミカとメインスミト -->
 			<i class="fas fa-home fa-4x main-sumika"></i>
 			<i class="fas fa-male fa-1x main-sumito"></i>
-
 			 <!-- 音声ファイル -->
 			<audio id="sound-file" preload="auto">
 				<source src="sumika_file/hanma.wav" type="audio/wav">
 			</audio>
-
 		</div>
 
 
 	<!-- スミカを作る -->
 	<h3 class="main-text">スミカを作る</h3>
-
 	<!-- モーダル -->
 	<div class = "login-modal-wrapper" id ="sumika-create-modal">
 		<div class="modal">
-
-      <div>
-      </div>
-      <div id="login-form">
-        <h2>場所と時間</h2>
-        <form method ="POST" action="sumika.php">
-        	    <p class="print-time"></p>
-				<p class="print-latitude"></p>
-				<p class="print-longitude"></p>
-
-		  <div id="map" style="width:400px; height:300px"></div>
-
-
-          <div id="submit-btn">ここに住む</div>
-        </form>
-    	</div>
+      		<div id="login-form">
+        		<h2>場所と時間</h2>
+		  		<div id="map" style="width:400px; height:300px"></div>
+          		<div id="submit-btn">ここに住む</div>
+    		</div>
+  		</div>
   	</div>
-  </div>
-
-	<p class="print-time"></p>
-	<p class="print-latitude"></p>
-	<p class="print-longitude"></p>
+  	<!-- カナヅチ -->
 	<a href="#"><i class="fas fa-gavel fa-2x create-sumika"></i></a>
 
 
 
 	<!-- スミト -->
-
 	<h3 class="main-text">スミトを選ぶ</h3>
 		<div class="humans">
 				<a href="#" class="human"><i class="fas fa-male fa-5x red-human"></i></a>
@@ -98,171 +69,13 @@
 		</div>
 
 
-
 	<!-- ヒトコト -->
 	<h3 class="main-text">ヒトコト</h3>
-		<form method="post" action="sumika.php" id="submit" >
-			<input type="text" name="word" id = "input" size="55" placeholder="ヒトコト">
-			<input type="hidden" id = "jtd" name="jtd" value="">
-		</form>
-	</div>
+		<input type="text" name="word" id = "input" size="55" placeholder="ヒトコト">
 
-
-
-	<!-- js -->
-	<script type="text/javascript">
-		// データを保持する連想配列
-		var total_data = {};
-		// 日付やジオデータを表示しtotal_dataに代入する関数
-		// ダブりなう
-		function echo_geodata(position){
-			// 日付データ
-			var time = new Date();
-			total_data['time'] = time;
-			// ジオデータ
-			var latitude = position.coords.latitude;
-			total_data['latitude'] = latitude;
-			var longitude= position.coords.longitude;
-			total_data['longitude'] = longitude;
-
-
-		}
-		// 音声ファイルを再生する関数
-		function sound(){
-			document.getElementById( 'sound-file' ).play();
-		}
-		// JQuery------------------------------------------------
-		// ハンバーガーをタップした時の動作（メニューとオーバーレイ）
-
-		var num = 0;
-		$('.fa-align-justify').click(function(){
-			$("body").append('<div id="modal-overlay"></div>');
-			$(this).data("click",++num);
-			var click = $(this).data("click");
-			if(click % 2 == 1){
-				$('#hide-menu').css('display','block');
-				$('#modal-overlay').fadeIn();
-			}else{
-				$('#hide-menu').css('display','none');
-				$('#modal-overlay').fadeOut();
-			}
-		})
-
-
-
-		// カナヅチを押した時の動作
-		$('.create-sumika').click(function(){
-			navigator.geolocation.getCurrentPosition(echo_geodata);
-    		$('.main-sumika').animate({opacity: '1'},5000);
-    		sound();
-    		$('#sumika-create-modal').fadeIn();
-    		initMap();
-
-    	});
-
-		// モーダルを閉じる
-		$('#submit-btn').click(function(){
-			$('#sumika-create-modal').fadeOut();
-		});
-
-		// スミトをクリック
-		$('.fa-male').click(function(){
-			$(this).css('opacity','1');
-			var color = $(this).css('color');
-			$('.main-sumito').css('color',color).css('opacity','1');
-			// 色の値を配列に代入
-			total_data['color'] = color;
-		});
-
-		// 入力した時のイベント
-		$('#input').keyup(function(){
-			var text = $('#input').val();
-			total_data['text'] = text;
-		});
-
-		// メインスミカをタップした時のイベント
-		$('.main-sumika').click(function(){
-			var json_total_data = JSON.stringify(total_data);
-			console.log(json_total_data);
-			// hiddenタグのvalueに変数を入れる
-			$('#jtd').val(json_total_data);
-			// submit
-        	// $('#submit').submit();
-
-        	$.ajax({
-			async: true,// 非同期処理
-			url: 'recieve.php',
-			type: "POST",
-			dataType: 'json',
-			data:json_total_data
-			}).done(function (data) {
-				console.log("データをを取得しました。");
-				console.log(data);
-			}).fail(function () {
-				console.log("処理に失敗しました。");
-			});
-		});
-
-		// エンターを押した時のsubmitを防ぐ
-		$('input[type="text"]').keypress(function(e){
-    	if((e.which == 13) || (e.keyCode == 13)){ return false; }
-		});
-
-	</script>
-	<script>
-    // 現在地取得処理
-    function initMap() {
-      // Geolocation APIに対応している
-      if (navigator.geolocation) {
-        // 現在地を取得
-        navigator.geolocation.getCurrentPosition(
-          // 取得成功した場合
-          function(position) {
-            // 緯度・経度を変数に格納
-            var mapLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            // マップオプションを変数に格納
-            var mapOptions = {
-              zoom : 15,          // 拡大倍率
-              center : mapLatLng  // 緯度・経度
-            };
-            // マップオブジェクト作成
-            var map = new google.maps.Map(
-              document.getElementById("map"), // マップを表示する要素
-              mapOptions         // マップオプション
-            );
-            //マップにマーカーを表示する
-            var marker = new google.maps.Marker({
-              map : map,             // 対象の地図オブジェクト
-              position : mapLatLng   // 緯度・経度
-            });
-          },
-          // 取得失敗した場合
-          function(error) {
-            // エラーメッセージを表示
-            switch(error.code) {
-              case 1: // PERMISSION_DENIED
-                alert("位置情報の利用が許可されていません");
-                break;
-              case 2: // POSITION_UNAVAILABLE
-                alert("現在位置が取得できませんでした");
-                break;
-              case 3: // TIMEOUT
-                alert("タイムアウトになりました");
-                break;
-              default:
-                alert("その他のエラー(エラーコード:"+error.code+")");
-                break;
-            }
-          }
-        );
-      // Geolocation APIに対応していない
-      } else {
-        alert("この端末では位置情報が取得できません");
-      }
-    }
-  </script>
 	<script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxNXrYg4kLhq6v3iGy2PBewPSU1EJejys&callback=initMap">
     </script>
+    <script src="sumika.js"></script>
 </body>
 </html>
