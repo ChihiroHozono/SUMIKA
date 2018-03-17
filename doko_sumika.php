@@ -26,6 +26,8 @@
   echo $rec['longitude']. '<br>';
   echo $rec['color'].'<br>';
   echo '<hr>';
+  $latitude = $rec['latitude'];
+  $longitude = $rec['longitude'];
   }
 
   // データベースの切断
@@ -62,6 +64,9 @@
     <div id="map"></div>
     <script>
 
+      var latitude = Number("<?php echo $latitude; ?>;");
+      var longitude = Number("<?php echo $longitude; ?>;");
+      console.log(typeof(latitude));
 
       function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -77,6 +82,8 @@
               lat: position.coords.latitude,
               lng: position.coords.longitude
             };
+
+            console.log(typeof(pos['lat']));
 
             infoWindow.setPosition(pos);
             infoWindow.setContent('Location found.');

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,13 +9,7 @@
 	<!-- フォントオーサム -->
 	<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 
-	<!-- JQuery-->
-	<script
-	  	src="https://code.jquery.com/jquery-3.3.1.js"
-	  	integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-	  	crossorigin="anonymous">
-  	</script>
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 </head>
 
@@ -162,6 +157,7 @@
     		sound();
     		$('#sumika-create-modal').fadeIn();
     		initMap();
+
     	});
 
 		// モーダルを閉じる
@@ -191,7 +187,20 @@
 			// hiddenタグのvalueに変数を入れる
 			$('#jtd').val(json_total_data);
 			// submit
-        	$('#submit').submit();
+        	// $('#submit').submit();
+
+        	$.ajax({
+			async: true,// 非同期処理
+			url: 'recieve.php',
+			type: "POST",
+			dataType: 'json',
+			data:json_total_data
+			}).done(function (data) {
+				console.log("データをを取得しました。");
+				console.log(data);
+			}).fail(function () {
+				console.log("処理に失敗しました。");
+			});
 		});
 
 		// エンターを押した時のsubmitを防ぐ
