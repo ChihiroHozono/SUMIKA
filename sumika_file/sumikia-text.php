@@ -18,3 +18,13 @@ if(isset($_POST["jtd"])){
 	$dbh=null;
 }
 ?>
+
+
+<!-- データベースから取り出した値をecho -->
+echo $data['id'] . '<br>';
+echo $data['time'] . '<br>';
+echo $data['text'] . '<br>';
+echo $data['latitude'] . '<br>';
+echo $data['longitude']. '<br>';
+echo $data['color'].'<br>';
+echo '<hr>';
