@@ -70,12 +70,14 @@ $('#input').keyup(function(){
 
 // メインスミカをタップした時のイベント
 $('.main-sumika').click(function(){
+json_total_data = JSON.stringify(total_data);
+console.log(json_total_data);
 	// AJAX
 	$.ajax({
 	url: 'sumika_recieve.php',
 	type: "POST",
 	dataType: 'json',
-	data:total_data
+	data:json_total_data
 	}).done(function (data) {
 		console.log("データをを取得しました。");
 		console.log(data);

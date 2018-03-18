@@ -58,14 +58,14 @@
 	<!-- スミト -->
 	<h3 class="main-text">スミトを選ぶ</h3>
 		<div class="humans">
-				<a href="#" class="human"><i class="fas fa-male fa-5x red-human"></i></a>
-				<a href="#" class="human"><i class="fas fa-male fa-5x green-human"></i></a>
-				<a href="#" class="human"><i class="fas fa-male fa-5x pink-human"></i></a>
-				<a href="#" class="human"><i class="fas fa-male fa-5x yellow-human"></i></a>
-				<a href="#" class="human"><i class="fas fa-male fa-5x blue-human"></i></a>
-				<a href="#" class="human"><i class="fas fa-male fa-5x
-				black-human">
-				</i></a>
+			<a href="#" class="human"><i class="fas fa-male fa-5x red-human"></i></a>
+			<a href="#" class="human"><i class="fas fa-male fa-5x green-human"></i></a>
+			<a href="#" class="human"><i class="fas fa-male fa-5x pink-human"></i></a>
+			<a href="#" class="human"><i class="fas fa-male fa-5x yellow-human"></i></a>
+			<a href="#" class="human"><i class="fas fa-male fa-5x blue-human"></i></a>
+			<a href="#" class="human"><i class="fas fa-male fa-5x
+			black-human">
+			</i></a>
 		</div>
 
 

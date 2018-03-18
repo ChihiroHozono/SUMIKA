@@ -63,17 +63,35 @@
   <body>
     <div id="map"></div>
     <script>
-
+      // PHPの変数をJSに代入
       var latitude = Number("<?php echo $latitude; ?>;");
       var longitude = Number("<?php echo $longitude; ?>;");
+
       console.log(typeof(latitude));
 
       function initMap() {
+        // 取得したHTML要素に地図を埋め込む
         var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
+          // 地図の中心地
+          center:{lat:35.658581,lng:139.745433},
+          // ズームの指定
           zoom: 6
         });
         var infoWindow = new google.maps.InfoWindow({map: map});
+        // マーカーの追加
+        var marker = new google.maps.Marker({
+          // マーカーを立てる位置
+          position:{lat:35.658581,lng:139.745433},
+          map:map
+        })
+
+
+        var marker1 = new google.maps.Marker({
+          // マーカーを立てる位置
+          position:{lat:35.710063,lng:139.8107},
+          map:map
+        })
+
 
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
